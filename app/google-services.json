@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "946647193907",
+    "firebase_url": "https://todo-48141.firebaseio.com",
+    "project_id": "todo-48141",
+    "storage_bucket": "todo-48141.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946647193907:android:9cb5288e60f40ce7",
+        "android_client_info": {
+          "package_name": "com.kola.mytodo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946647193907-htiui2ng1q4ol66me2b76a2cccgr9d8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_565rufp-_crCdl08zPNyLTxY5C8SwxY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

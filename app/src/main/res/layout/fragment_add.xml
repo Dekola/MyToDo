@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kola.mytodo.Fragment.AddFragment"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    >
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/titleInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:hint="Task"
+        android:textColorHint="@color/colorPrimary"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/taskEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/bodyInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleInputLayout"
+        android:layout_marginTop="20dp"
+        android:hint="Notes"
+        android:textColorHint="@color/colorPrimary"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/noteEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="10"
+            android:inputType="textMultiLine"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/reminderLl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/bodyInputLayout"
+        android:layout_marginTop="20dp"
+        >
+
+        <CheckBox
+            android:id="@+id/reminderChk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:text="Set Reminder"
+
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/dateRl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bodyInputLayout"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        >
+
+
+
+        <TextView
+            android:id="@+id/dateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="@string/date"
+
+            />
+
+        <TextView
+            android:id="@+id/atTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/dateTv"
+            android:layout_marginLeft="5dp"
+            android:textSize="15dp"
+            android:text="\@"
+            />
+
+        <TextView
+            android:id="@+id/timeTv"
+            android:layout_toRightOf="@+id/atTv"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="@string/time"
+            />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateRl"
+        android:layout_marginTop="40dp"
+        android:text="Add"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:textSize="17dp"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,9 @@
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frg_completed_recycler_view"
+    tools:context="com.kola.mytodo.Fragment.CompletedFragment">
+
+
+</android.support.v7.widget.RecyclerView>
