@@ -1,13 +1,12 @@
 package com.kola.mytodo;
 
+import android.annotation.SuppressLint;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.facebook.login.LoginFragment;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kola.mytodo.Fragment.AddFragment;
@@ -33,18 +31,27 @@ import com.kola.mytodo.Fragment.TodoFragment;
 import com.kola.mytodo.other.CircleTransform;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String name, email;
     boolean hasParent;
+    TaskDao taskDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        AppDatabase appDatabase = Room.databaseBuilder(this, AppDatabase.class, TaskDb.DATABASE).build();
+        taskDao = appDatabase.taskDao();
 
         Bundle b = getIntent().getExtras();
 
@@ -153,8 +160,35 @@ public class DrawerActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.delete){
+
+            deleteAll();
+
+        }
+
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void deleteAll() {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                taskDao.deleteAll("");
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+
+                setDefaultFragment();
+
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -198,8 +232,7 @@ public class DrawerActivity extends AppCompatActivity
 
     private void showFragment(android.support.v4.app.Fragment fragment) {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.activity_drawer_frame, fragment);
@@ -222,4 +255,5 @@ public class DrawerActivity extends AppCompatActivity
 //            hasParent = false;
 //        }
     }
+
 }

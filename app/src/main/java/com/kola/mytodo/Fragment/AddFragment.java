@@ -1,9 +1,13 @@
 package com.kola.mytodo.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.arch.persistence.room.Room;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,10 +23,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.kola.mytodo.AppDatabase;
 import com.kola.mytodo.R;
+import com.kola.mytodo.TaskDao;
+import com.kola.mytodo.TaskDb;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class AddFragment extends Fragment {
 
@@ -36,13 +46,22 @@ public class AddFragment extends Fragment {
     TextView dateTv, timeTv;
     EditText taskEt, noteEt;
     CheckBox reminderChk;
+    static TaskDao taskDao;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add, container, false);
 
+        AppDatabase appDatabase = Room.databaseBuilder(getActivity(), AppDatabase.class, TaskDb.DATABASE).build();
+
+        taskDao = appDatabase.taskDao();
+
+        note = null;
+
         taskEt = view.findViewById(R.id.taskEt);
+        taskEt.setText("kola");
         noteEt = view.findViewById(R.id.noteEt);
 
         dateTv = view.findViewById(R.id.dateTv);
@@ -81,6 +100,9 @@ public class AddFragment extends Fragment {
 
                     dateTv.setError(null);
                     timeTv.setError(null);
+
+                    date = null;
+                    time = null;
 
                 }
             }
@@ -151,23 +173,81 @@ public class AddFragment extends Fragment {
 
     private void addTAsk() {
 
-
         task = taskEt.getText().toString();
         note = noteEt.getText().toString();
 
         if (task.equals("")) taskEt.setError("Input a task");
         else if (reminderChk.isChecked() && dateTv.getText().equals("Date")) dateTv.setError("set the date");
         else if (reminderChk.isChecked() && timeTv.getText().equals("Time"))timeTv.setError("set the time");
-        else {
-            showToast("Task successfully added");
-
-            FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-            fragmentManager.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            fragmentManager.replace(R.id.activity_drawer_frame, new TodoFragment());
-            fragmentManager.commit();
-        }
+        else addToDatabase();
 
     }
+
+    @SuppressLint("StaticFieldLeak")
+    private  void addToDatabase() {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                String timeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS",  Locale.getDefault()).format(new Date());
+
+                TaskDb taskDb = new TaskDb();
+                taskDb.timeStamp = timeStamp;
+                taskDb.task = task;
+                taskDb.note = note;
+                taskDb.time = time;
+                taskDb.date = date;
+
+                taskDao.insertAll(taskDb);
+
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                showToast("Task successfully added");
+
+
+                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                fragmentManager.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                fragmentManager.replace(R.id.activity_drawer_frame, new TodoFragment());
+                fragmentManager.commit();
+            }
+
+        }.execute();
+    }
+
+//    private class addToDatabase extends AsyncTask<Void, Void, Void>{
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//
+//            TaskDb taskDb = new TaskDb();
+//            taskDb.task = task;
+//            taskDb.note = note;
+//            taskDb.time = time;
+//            taskDb.date = date;
+//
+//            taskDao.insertAll(taskDb);
+//            return null;
+//        }
+//
+//        protected void onPostExecute(Cursor al) {
+//            Toast.makeText(context, al.getCount() + "", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+
+//    private void addToDatabase() {
+//
+
+//
+//        showToast("Task successfully added");
+//
+//        FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+//        fragmentManager.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//        fragmentManager.replace(R.id.activity_drawer_frame, new TodoFragment());
+//        fragmentManager.commit();
+//
+//    }
 
 }
 

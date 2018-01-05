@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="5dp"
 
     >
 <CheckBox
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="18dp"
+        android:maxLines="1"
         android:text="This is the title"
 
         />
@@ -37,8 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleTv"
-        android:layout_marginTop="10dp"
         android:textSize="14dp"
+        android:maxLines="3"
         android:text="this is where the message of each of the todo list items will be displayed every time to enable to owner to view it"
         />
 
@@ -49,6 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         >
 
         <RelativeLayout
@@ -69,7 +71,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/timeTv"
-            android:layout_marginTop="5dp"
             android:text="12/28/2017"
             android:textSize="12dp"
             />

@@ -1,0 +1,125 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    tools:context="com.kola.mytodo.Fragment.TaskFragment">
+
+    <RelativeLayout
+        android:id="@+id/reminderRl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp"
+        >
+
+        <TextView
+            android:id="@+id/reminderTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:text="Reminder:"/>
+
+        <TextView
+            android:id="@+id/dateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/reminderTv"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="@string/date"
+
+            />
+
+        <TextView
+            android:id="@+id/atTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/dateTv"
+            android:layout_marginLeft="5dp"
+            android:textSize="15dp"
+            android:text="\@"
+            />
+
+        <TextView
+            android:id="@+id/timeTv"
+            android:layout_toRightOf="@+id/atTv"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="@string/time"
+            />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/taskRl"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/reminderRl"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textview1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:text="Task: "
+            />
+
+        <TextView
+            android:id="@+id/taskTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/textview1"
+            android:layout_alignTop="@+id/textview1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="15dp"
+            android:text="dsvsdvsdv"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/textview2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview1"
+            android:layout_marginTop="20dp"
+            android:text="Note:"
+            android:textColor="@color/colorPrimary"
+            android:layout_alignStart="@+id/textview1"
+            android:textSize="18dp"
+
+            />
+
+        <TextView
+            android:id="@+id/noteTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/textview2"
+            android:layout_alignStart="@+id/taskTv"
+            android:layout_alignTop="@+id/textview2"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/note_background"
+            android:text="@string/note"
+            android:lineSpacingExtra="5dp"
+            android:textSize="16dp"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>
