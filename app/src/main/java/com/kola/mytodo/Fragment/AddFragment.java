@@ -26,6 +26,7 @@ import com.kola.mytodo.AppDatabase;
 import com.kola.mytodo.R;
 import com.kola.mytodo.TaskDao;
 import com.kola.mytodo.TaskDb;
+import com.kola.mytodo.TaskDb;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

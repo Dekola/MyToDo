@@ -1,14 +1,9 @@
 package com.kola.mytodo;
 
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
 import android.database.Cursor;
-
-import java.util.List;
 
 /**
  * Created by Akano on 1/3/2018.
@@ -16,34 +11,43 @@ import java.util.List;
 @Dao
 public interface TaskDao  {
 
-//    @Query("SELECT * FROM Tasks")
-//    Cursor loadAllUsers;
-
-    @Query("SELECT * FROM Tasks")
-    Cursor getAll();
+    @Query("SELECT * FROM ongoingTaskTable")
+    Cursor getAllFromOngoingTaskTable();
 
     @Insert
-    void insertAll(TaskDb task);
+    void insertAllintoOngoingTaskTable(TaskDb task);
 
-    @Query("SELECT * FROM Tasks WHERE timeStamp LIKE :timeStamp")
-    Cursor getAtTimeStamp(String timeStamp);
-
-//    @Query("SELECT * FROM Tasks WHERE id LIKE :position")
-//    Cursor getAtPosition(int position);
+    @Query("SELECT * FROM ongoingTaskTable WHERE timeStamp LIKE :timeStamp")
+    Cursor getAtTimeStampFromOngoingTaskTable(String timeStamp);
 
 
 
-    //    @Query("SELECT * FROM Tasks WHERE first_name LIKE :first AND "
-//            + "last_name LIKE :last LIMIT 1")
-//    TaskDb findByName(String first, String last);
-//
-//
-//
-//    @Insert
-//    void insertAll(TaskDb... users);
-//
-@Query("DELETE FROM Tasks WHERE id LIKE :id")
-public void deleteAll(String id );
+
+    @Query("SELECT * FROM CompletedDb")
+    Cursor getAllFromCompletedTaskTable();
+
+    @Insert
+    void insertAllintoCompletedTaskTable(TaskDb task);
+
+    @Query("SELECT * FROM CompletedDb WHERE timeStamp LIKE :timeStamp")
+    Cursor getAtTimeStampFromCompletedTaskTable(String timeStamp);
+
+
+
+
+    @Query("SELECT * FROM deletedTaskTable")
+    Cursor getAllFromDeletedTaskTable();
+
+    @Insert
+    void insertAllintoDeletedTaskTable(TaskDb task);
+
+    @Query("SELECT * FROM deletedTaskTable WHERE timeStamp LIKE :timeStamp")
+    Cursor getAtTimeStampFromDeletedTaskTable(String timeStamp);
+
+
+
+//    @Query("DELETE FROM ongoingTaskTable WHERE id LIKE :id")
+//    public void deleteAll(String id );
 
 
 //    @Delete

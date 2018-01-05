@@ -9,21 +9,16 @@ import static com.kola.mytodo.CompletedDb.NOTE;
 import static com.kola.mytodo.CompletedDb.TASK;
 import static com.kola.mytodo.CompletedDb.TIME;
 import static com.kola.mytodo.CompletedDb.TIMESTAMP;
+import static com.kola.mytodo.DeletedDb.DELETED_TASK_TABLE;
 
-import static com.kola.mytodo.TaskDb.ONGOING_TASK_TABLE;
+@Entity(tableName = DELETED_TASK_TABLE)
+public class DeletedDb{
 
-/**
- * Created by Akano on 1/3/2018.
- */
-
-@Entity (tableName = ONGOING_TASK_TABLE)
-public class TaskDb {
-    public static final String ONGOING_TASK_TABLE = "ongoingTaskTable" ;
-
-    @PrimaryKey (autoGenerate = true)
+    public static final String DELETED_TASK_TABLE = "deletedTaskTable" ;
+    @PrimaryKey(autoGenerate = true)
     int id;
 
-    @ColumnInfo (name = TIMESTAMP)
+    @ColumnInfo(name = TIMESTAMP)
     public String timeStamp;
 
     @ColumnInfo (name = TASK)
@@ -38,4 +33,3 @@ public class TaskDb {
     @ColumnInfo (name = TIME)
     public String time;
 }
-
