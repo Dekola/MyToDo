@@ -66,7 +66,7 @@ public class DrawerActivity extends AppCompatActivity
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 fragmentTransaction.replace(R.id.activity_drawer_frame, new AddFragment());
                 fragmentTransaction.commit();
@@ -89,7 +89,7 @@ public class DrawerActivity extends AppCompatActivity
         navHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DrawerActivity.this, "dgsd", Toast.LENGTH_SHORT).show();
+
             }
         });
         ImageView profile_image = navHeader.findViewById(R.id.profile_imv);
@@ -127,19 +127,12 @@ public class DrawerActivity extends AppCompatActivity
     private void setDefaultFragment() {
 
         hasParent = true;
-       showFragment(new TodoFragment());
 
-    }
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.activity_drawer_frame, new TodoFragment());
+        fragmentTransaction.commit();
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-//            this.finish();
-            System.exit(0);
-        }
     }
 
     @Override
@@ -216,7 +209,7 @@ public class DrawerActivity extends AppCompatActivity
 
             Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_about_us) {
-
+            Toast.makeText(this, "About us", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_log_out) {
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
@@ -233,7 +226,7 @@ public class DrawerActivity extends AppCompatActivity
     private void showFragment(android.support.v4.app.Fragment fragment) {
 
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.activity_drawer_frame, fragment);
         fragmentTransaction.commit();
@@ -256,4 +249,30 @@ public class DrawerActivity extends AppCompatActivity
 //        }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+////            this.finish();
+////            System.exit(0);
+//
+////            super.onBackPressed();
+//            new AddFragment().backButtonWasPressed();
+//        }
+//    }
 }

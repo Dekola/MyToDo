@@ -98,9 +98,6 @@ public class TaskFragment extends Fragment {
 //
 //                Toast.makeText(getActivity(), task+" "+date+" "+time, Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getActivity(), cursor.getCount()+" "+timeStamp, Toast.LENGTH_SHORT).show();
-
-
                 taskTv.setText(task);
 
                 if (note.equals("")) {

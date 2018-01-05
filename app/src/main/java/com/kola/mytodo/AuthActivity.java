@@ -281,6 +281,8 @@ public class AuthActivity extends AppCompatActivity {
         it.putExtra("name",name);
         it.putExtra("email",email);
         startActivity(it);
+
+        this.finish();
     }
 
     void showToast(String message){

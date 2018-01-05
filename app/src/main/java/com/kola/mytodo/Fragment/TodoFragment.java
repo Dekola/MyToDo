@@ -126,8 +126,6 @@ public class TodoFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
 
-                Toast.makeText(context, task.size()+"", Toast.LENGTH_SHORT).show();
-
                 TodoAdapter adapter = new TodoAdapter(getActivity(), task, note, time, date, timeStamp);
 
                 adapter.registerListener(customClickListener);
@@ -147,13 +145,12 @@ public class TodoFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("timeStamp", timeStamp);
 
-//            Toast.makeText(context, position+"", Toast.LENGTH_SHORT).show();
-
             TaskFragment taskFragment = new TaskFragment();
 
             taskFragment.setArguments(bundle);
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragmentTransaction.replace(R.id.activity_drawer_frame, taskFragment).commit();
         }
