@@ -1,4 +1,4 @@
-package com.kola.mytodo;
+package com.kola.mytodo.database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -23,13 +23,13 @@ public interface TaskDao  {
 
 
 
-    @Query("SELECT * FROM CompletedDb")
+    @Query("SELECT * FROM completedTaskTable")
     Cursor getAllFromCompletedTaskTable();
 
     @Insert
     void insertAllintoCompletedTaskTable(TaskDb task);
 
-    @Query("SELECT * FROM CompletedDb WHERE timeStamp LIKE :timeStamp")
+    @Query("SELECT * FROM completedTaskTable WHERE timeStamp LIKE :timeStamp")
     Cursor getAtTimeStampFromCompletedTaskTable(String timeStamp);
 
 

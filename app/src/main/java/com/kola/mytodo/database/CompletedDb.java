@@ -1,20 +1,20 @@
-package com.kola.mytodo;
+package com.kola.mytodo.database;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import static com.kola.mytodo.CompletedDb.COMPLETED_TASK_TABLE;
+import static com.kola.mytodo.other.Constants.COMPLETED_TASK_TABLE;
+import static com.kola.mytodo.other.Constants.DATE;
+import static com.kola.mytodo.other.Constants.NOTE;
+import static com.kola.mytodo.other.Constants.TASK;
+import static com.kola.mytodo.other.Constants.TIME;
+import static com.kola.mytodo.other.Constants.TIMESTAMP;
 
 @Entity(tableName = COMPLETED_TASK_TABLE)
 public class CompletedDb {
 
-    public static final String COMPLETED_TASK_TABLE = "completedTaskTable" ;
-    public static final String TASK = "task" ;
-    public static final String NOTE = "note" ;
-    public static final String DATE = "date" ;
-    public static final String TIME = "time" ;
-    public static final String TIMESTAMP = "timeStamp" ;
+
     @PrimaryKey(autoGenerate = true)
     int id;
 

@@ -16,12 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.kola.mytodo.AppDatabase;
+import com.kola.mytodo.database.AppDatabase;
 import com.kola.mytodo.R;
-import com.kola.mytodo.TaskDao;
-import com.kola.mytodo.TaskDb;
+import com.kola.mytodo.database.TaskDao;
+import com.kola.mytodo.database.TaskDb;
 import com.kola.mytodo.adapter.CustomClickListener;
 import com.kola.mytodo.adapter.TodoAdapter;
+import com.kola.mytodo.other.Constants;
 import com.kola.mytodo.other.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class TodoFragment extends Fragment {
                 getApplicationContext()
         ));
 
-        AppDatabase appDatabase = Room.databaseBuilder(getActivity(), AppDatabase.class, TaskDb.DATABASE).build();
+        AppDatabase appDatabase = Room.databaseBuilder(getActivity(), AppDatabase.class, Constants.ONGOING_TASK_TABLE).build();
 
         taskDao = appDatabase.taskDao();
 
@@ -83,17 +84,17 @@ public class TodoFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                cursor = taskDao.getAll();
+                cursor = taskDao.getAllFromOngoingTaskTable();
 
                 if (cursor.getCount()>0) {
                     cursor.moveToFirst();
 
                     do {
-                        timeStamp.add(cursor.getString(cursor.getColumnIndex(TaskDb.TIMESTAMP)));
-                        task.add(section+" "+cursor.getString(cursor.getColumnIndex(TaskDb.TASK)));
-                        note.add(cursor.getString(cursor.getColumnIndex(TaskDb.NOTE)));
-                        date.add(cursor.getString(cursor.getColumnIndex(TaskDb.DATE)));
-                        time.add(cursor.getString(cursor.getColumnIndex(TaskDb.TIME)));
+                        timeStamp.add(cursor.getString(cursor.getColumnIndex(Constants.TIMESTAMP)));
+                        task.add(section+" "+cursor.getString(cursor.getColumnIndex(Constants.TASK)));
+                        note.add(cursor.getString(cursor.getColumnIndex(Constants.NOTE)));
+                        date.add(cursor.getString(cursor.getColumnIndex(Constants.DATE)));
+                        time.add(cursor.getString(cursor.getColumnIndex(Constants.TIME)));
 
                     } while (cursor.moveToNext());
                 }

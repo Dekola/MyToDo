@@ -1,20 +1,19 @@
-package com.kola.mytodo;
+package com.kola.mytodo.database;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import static com.kola.mytodo.CompletedDb.DATE;
-import static com.kola.mytodo.CompletedDb.NOTE;
-import static com.kola.mytodo.CompletedDb.TASK;
-import static com.kola.mytodo.CompletedDb.TIME;
-import static com.kola.mytodo.CompletedDb.TIMESTAMP;
-import static com.kola.mytodo.DeletedDb.DELETED_TASK_TABLE;
+import static com.kola.mytodo.other.Constants.DATE;
+import static com.kola.mytodo.other.Constants.DELETED_TASK_TABLE;
+import static com.kola.mytodo.other.Constants.NOTE;
+import static com.kola.mytodo.other.Constants.TASK;
+import static com.kola.mytodo.other.Constants.TIME;
+import static com.kola.mytodo.other.Constants.TIMESTAMP;
 
 @Entity(tableName = DELETED_TASK_TABLE)
 public class DeletedDb{
 
-    public static final String DELETED_TASK_TABLE = "deletedTaskTable" ;
     @PrimaryKey(autoGenerate = true)
     int id;
 

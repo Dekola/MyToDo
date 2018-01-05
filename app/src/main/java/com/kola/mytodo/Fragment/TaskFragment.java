@@ -14,10 +14,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kola.mytodo.AppDatabase;
+import com.kola.mytodo.database.AppDatabase;
 import com.kola.mytodo.R;
-import com.kola.mytodo.TaskDao;
-import com.kola.mytodo.TaskDb;
+import com.kola.mytodo.database.TaskDao;
+import com.kola.mytodo.database.TaskDb;
+import com.kola.mytodo.other.Constants;
 
 
 /**
@@ -47,7 +48,7 @@ public class TaskFragment extends Fragment {
 
         timeStamp = getArguments().getString("timeStamp");
 
-        taskDao = Room.databaseBuilder(getActivity(), AppDatabase.class, TaskDb.DATABASE).build().taskDao();
+        taskDao = Room.databaseBuilder(getActivity(), AppDatabase.class, Constants.ONGOING_TASK_TABLE).build().taskDao();
 
         reminderRl = view.findViewById(R.id.reminderRl);
         taskRl = view.findViewById(R.id.taskRl);
@@ -77,7 +78,7 @@ public class TaskFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                cursor = taskDao.getAtTimeStamp(timeStamp);
+                cursor = taskDao.getAtTimeStampFromOngoingTaskTable(timeStamp);
 
                 return null;
             }
@@ -88,10 +89,10 @@ public class TaskFragment extends Fragment {
 
                 cursor.moveToFirst();
 
-                task = cursor.getString(cursor.getColumnIndex(TaskDb.TASK));
-                note = cursor.getString(cursor.getColumnIndex(TaskDb.NOTE));
-                date = cursor.getString(cursor.getColumnIndex(TaskDb.DATE));
-                time = cursor.getString(cursor.getColumnIndex(TaskDb.TIME));
+                task = cursor.getString(cursor.getColumnIndex(Constants.TASK));
+                note = cursor.getString(cursor.getColumnIndex(Constants.NOTE));
+                date = cursor.getString(cursor.getColumnIndex(Constants.DATE));
+                time = cursor.getString(cursor.getColumnIndex(Constants.TIME));
 //
 //                Toast.makeText(getActivity(), task+" "+date+" "+time, Toast.LENGTH_SHORT).show();
 

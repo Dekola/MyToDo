@@ -22,17 +22,19 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.kola.mytodo.AppDatabase;
+import com.kola.mytodo.database.AppDatabase;
 import com.kola.mytodo.R;
-import com.kola.mytodo.TaskDao;
-import com.kola.mytodo.TaskDb;
-import com.kola.mytodo.TaskDb;
+import com.kola.mytodo.database.TaskDao;
+import com.kola.mytodo.database.TaskDb;
+import com.kola.mytodo.other.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+
+import static com.kola.mytodo.other.Constants.TODO;
 
 public class AddFragment extends Fragment {
 
@@ -54,14 +56,14 @@ public class AddFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add, container, false);
 
-        AppDatabase appDatabase = Room.databaseBuilder(getActivity(), AppDatabase.class, TaskDb.DATABASE).build();
+        AppDatabase appDatabase = Room.databaseBuilder(getActivity(), AppDatabase.class, Constants.ONGOING_TASK_TABLE).build();
 
         taskDao = appDatabase.taskDao();
 
         note = null;
 
         taskEt = view.findViewById(R.id.taskEt);
-        taskEt.setText("kola");
+//        taskEt.setText("kola");
         noteEt = view.findViewById(R.id.noteEt);
 
         dateTv = view.findViewById(R.id.dateTv);
@@ -198,7 +200,7 @@ public class AddFragment extends Fragment {
                 taskDb.time = time;
                 taskDb.date = date;
 
-                taskDao.insertAll(taskDb);
+                taskDao.insertAllintoOngoingTaskTable(taskDb);
 
                 return null;
             }
@@ -206,10 +208,15 @@ public class AddFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 showToast("Task successfully added");
 
+                Bundle bundle = new Bundle();
+                bundle.putString("section", TODO);
+
+                TodoFragment todoFragment = new TodoFragment();
+                todoFragment.setArguments(bundle);
 
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
                 fragmentManager.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                fragmentManager.replace(R.id.activity_drawer_frame, new TodoFragment());
+                fragmentManager.replace(R.id.activity_drawer_frame, todoFragment);
                 fragmentManager.commit();
             }
 

@@ -1,7 +1,6 @@
 package com.kola.mytodo;
 
 import android.annotation.SuppressLint;
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,9 +25,14 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kola.mytodo.Fragment.AddFragment;
 import com.kola.mytodo.Fragment.TodoFragment;
+import com.kola.mytodo.database.TaskDao;
 import com.kola.mytodo.other.CircleTransform;
 
 import java.io.File;
+
+import static com.kola.mytodo.other.Constants.COMPLETED;
+import static com.kola.mytodo.other.Constants.DELETED;
+import static com.kola.mytodo.other.Constants.TODO;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,10 +41,6 @@ public class DrawerActivity extends AppCompatActivity
     boolean hasParent;
     TaskDao taskDao;
 
-    public static String TODO = "todo";
-    public static String COMPLETED = "completed";
-    public static String DELETED = "deleted";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +48,8 @@ public class DrawerActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        AppDatabase appDatabase = Room.databaseBuilder(this, AppDatabase.class, TaskDb.DATABASE).build();
-        taskDao = appDatabase.taskDao();
+//        AppDatabase appDatabase = Room.databaseBuilder(this, AppDatabase.class, TaskDb.DATABASE).build();
+//        taskDao = appDatabase.taskDao();
 
         Bundle b = getIntent().getExtras();
 
@@ -164,7 +164,7 @@ public class DrawerActivity extends AppCompatActivity
             @Override
             protected Void doInBackground(Void... voids) {
 
-                taskDao.deleteAll("");
+//                taskDao.deleteAll("");
 
                 return null;
             }
