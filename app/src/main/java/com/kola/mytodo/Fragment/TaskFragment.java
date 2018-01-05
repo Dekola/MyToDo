@@ -7,13 +7,18 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.method.ScrollingMovementMethod;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Tasks;
 import com.kola.mytodo.database.AppDatabase;
 import com.kola.mytodo.R;
 import com.kola.mytodo.database.TaskDao;
@@ -33,11 +38,8 @@ public class TaskFragment extends Fragment {
 
     TaskDao taskDao;
     TextView taskTv, noteTv, dateTv, timeTv, textview2;
-
-    String task, note, date, time;
-
-    String timeStamp;
-
+    ImageView completeImg, deleteImg;
+    String task, note, date, time, timeStamp;
     RelativeLayout reminderRl, taskRl;
 
     @Override
@@ -49,6 +51,9 @@ public class TaskFragment extends Fragment {
         timeStamp = getArguments().getString("timeStamp");
 
         taskDao = Room.databaseBuilder(getActivity(), AppDatabase.class, Constants.ONGOING_TASK_TABLE).build().taskDao();
+
+        deleteImg = view.findViewById(R.id.deleteImg);
+        completeImg = view.findViewById(R.id.completeImg);
 
         reminderRl = view.findViewById(R.id.reminderRl);
         taskRl = view.findViewById(R.id.taskRl);
@@ -64,7 +69,30 @@ public class TaskFragment extends Fragment {
 
         loadTasks();
 
+        deleteImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                String message = "Do u want to delete Task: "+ task;
+//                showDialog(message);
+            }
+        });
+
+        completeImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                SpannableStringBuilder message = new SpannableStringBuilder("You have chosen " + task + " as your contact.");
+//                StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD); // Span to make text bold
+//                message.setSpan(b, 16, 16 + task.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
+//
+////                String message = "Do u want to add Task: "+ task + " <b> to completed list";
+//                showDialog(String.valueOf(message));
+            }
+        });
+
         return view;
+    }
+
+    private void showDialog(String message) {
     }
 
     @SuppressLint("StaticFieldLeak")
