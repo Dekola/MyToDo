@@ -18,11 +18,11 @@ import android.widget.Toast;
 
 import com.kola.mytodo.AppDatabase;
 import com.kola.mytodo.R;
-import com.kola.mytodo.other.SimpleDividerItemDecoration;
 import com.kola.mytodo.TaskDao;
 import com.kola.mytodo.TaskDb;
 import com.kola.mytodo.adapter.CustomClickListener;
 import com.kola.mytodo.adapter.TodoAdapter;
+import com.kola.mytodo.other.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -41,6 +41,7 @@ public class TodoFragment extends Fragment {
     TaskDao taskDao;
     Context context;
     RecyclerView frg_todo_recyclerview;
+    String section;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,6 +49,10 @@ public class TodoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
 
         context = getActivity();
+
+        section = getArguments().getString("section");
+
+        Toast.makeText(context, section+"", Toast.LENGTH_SHORT).show();
 
         frg_todo_recyclerview = view.findViewById(R.id.frg_todo_recyclerview);
 
@@ -60,34 +65,6 @@ public class TodoFragment extends Fragment {
         taskDao = appDatabase.taskDao();
 
         loadDatabase();
-
-//        ArrayList<String> title = new ArrayList<>();
-//        title.add("Buy groceries");
-//        title.add("go to school");
-//        title.add("call femi");
-//        title.add("wash clothes");
-//
-//        ArrayList<String> message = new ArrayList<>();
-//        message.add("jam, butter, milk, toothpaste, bread, cornflakes, tomatoes, fries, ketchup, vinegar, baking soda ");
-//        message.add("");
-//        message.add("discuss about the school materials and his new stocks");
-//        message.add("bed sheet, towel, trousers");
-//
-//        ArrayList<String> time = new ArrayList<>();
-//        time.add("12:52");
-//        time.add("1:35");
-//        time.add("16:32");
-//        time.add("22:07");
-//
-//        ArrayList<String> date = new ArrayList<>();
-//        date.add("12/28/17");
-//        date.add("4/15/17");
-//        date.add("6/24/17");
-//        date.add("3/19/17");
-
-//        TodoAdapter adapter = new TodoAdapter(getActivity(), title, message, time, date);
-//        frg_todo_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-//        frg_todo_recyclerview.setAdapter(adapter);
 
         return view;
     }
@@ -113,7 +90,7 @@ public class TodoFragment extends Fragment {
 
                     do {
                         timeStamp.add(cursor.getString(cursor.getColumnIndex(TaskDb.TIMESTAMP)));
-                        task.add(cursor.getString(cursor.getColumnIndex(TaskDb.TASK)));
+                        task.add(section+" "+cursor.getString(cursor.getColumnIndex(TaskDb.TASK)));
                         note.add(cursor.getString(cursor.getColumnIndex(TaskDb.NOTE)));
                         date.add(cursor.getString(cursor.getColumnIndex(TaskDb.DATE)));
                         time.add(cursor.getString(cursor.getColumnIndex(TaskDb.TIME)));

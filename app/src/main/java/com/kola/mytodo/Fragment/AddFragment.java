@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.arch.persistence.room.Room;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;

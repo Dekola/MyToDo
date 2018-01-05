@@ -25,23 +25,21 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kola.mytodo.Fragment.AddFragment;
-import com.kola.mytodo.Fragment.CompletedFragment;
-import com.kola.mytodo.Fragment.DeleteFragment;
 import com.kola.mytodo.Fragment.TodoFragment;
 import com.kola.mytodo.other.CircleTransform;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    String name, email;
+    String name, email, section;
     boolean hasParent;
     TaskDao taskDao;
+
+    public static String TODO = "todo";
+    public static String COMPLETED = "completed";
+    public static String DELETED = "deleted";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,10 +126,7 @@ public class DrawerActivity extends AppCompatActivity
 
         hasParent = true;
 
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        fragmentTransaction.replace(R.id.activity_drawer_frame, new TodoFragment());
-        fragmentTransaction.commit();
+        showFragment(TODO);
 
     }
 
@@ -195,15 +190,15 @@ public class DrawerActivity extends AppCompatActivity
         android.support.v4.app.Fragment fragment = null;
 
         if (id == R.id.nav_mytodo) {
-            fragment = new TodoFragment();
+            section = TODO;
 
         } else if (id == R.id.nav_completed_task) {
 
-            fragment = new CompletedFragment();
+            section = COMPLETED;
 
         } else if (id == R.id.nav_deleted_task) {
 
-            fragment = new DeleteFragment();
+            section = DELETED;
 
         } else if (id == R.id.nav_share) {
 
@@ -216,19 +211,24 @@ public class DrawerActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), AuthActivity.class));
         }
 
-        if (fragment != null) showFragment(fragment);
+         showFragment(section);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void showFragment(android.support.v4.app.Fragment fragment) {
+    private void showFragment(String section) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("section", section);
+
+        TodoFragment todoFragment = new TodoFragment();
+        todoFragment.setArguments(bundle);
 
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        fragmentTransaction.replace(R.id.activity_drawer_frame, fragment);
+        fragmentTransaction.replace(R.id.activity_drawer_frame, todoFragment);
         fragmentTransaction.commit();
 
         toggleFab(1);
