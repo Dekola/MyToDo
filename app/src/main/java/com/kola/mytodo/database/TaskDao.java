@@ -15,11 +15,13 @@ public interface TaskDao  {
     Cursor getAllFromOngoingTaskTable();
 
     @Insert
-    void insertAllintoOngoingTaskTable(TaskDb task);
+    void insertAllintoOngoingTaskTable(OngoingTaskDb task);
 
     @Query("SELECT * FROM ongoingTaskTable WHERE timeStamp LIKE :timeStamp")
     Cursor getAtTimeStampFromOngoingTaskTable(String timeStamp);
 
+    @Query("DELETE FROM ongoingTaskTable WHERE timeStamp LIKE :timeStamp")
+    public void deleteFromOngoingTaskTable(String timeStamp );
 
 
 
@@ -27,11 +29,13 @@ public interface TaskDao  {
     Cursor getAllFromCompletedTaskTable();
 
     @Insert
-    void insertAllintoCompletedTaskTable(TaskDb task);
+    void insertAllintoCompletedTaskTable(OngoingTaskDb task);
 
     @Query("SELECT * FROM completedTaskTable WHERE timeStamp LIKE :timeStamp")
     Cursor getAtTimeStampFromCompletedTaskTable(String timeStamp);
 
+    @Query("DELETE FROM completedTaskTable WHERE timeStamp LIKE :timeStamp")
+    public void deleteFromcompletedTaskTable(String timeStamp );
 
 
 
@@ -39,29 +43,30 @@ public interface TaskDao  {
     Cursor getAllFromDeletedTaskTable();
 
     @Insert
-    void insertAllintoDeletedTaskTable(TaskDb task);
+    void insertAllintoDeletedTaskTable(OngoingTaskDb task);
 
     @Query("SELECT * FROM deletedTaskTable WHERE timeStamp LIKE :timeStamp")
     Cursor getAtTimeStampFromDeletedTaskTable(String timeStamp);
 
+    @Query("DELETE FROM deletedTaskTable WHERE timeStamp LIKE :timeStamp")
+    public void deleteFromdeletedTaskTable(String timeStamp );
 
 
-//    @Query("DELETE FROM ongoingTaskTable WHERE id LIKE :id")
-//    public void deleteAll(String id );
+
 
 
 //    @Delete
-//    void delete(TaskDb user);
+//    void delete(OngoingTaskDb user);
 //
 //    @Update
-//    public void updateUsers(TaskDb... users);
+//    public void updateUsers(OngoingTaskDb... users);
 //
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    public void insertUsers(TaskDb... users);
+//    public void insertUsers(OngoingTaskDb... users);
 //
 //    @Delete
-//    public void deleteUsers(TaskDb... users);
+//    public void deleteUsers(OngoingTaskDb... users);
 //
 //    @Insert
-//    public void insertUsersAndFriends(TaskDb user, List<User> friends);
+//    public void insertUsersAndFriends(OngoingTaskDb user, List<User> friends);
 }

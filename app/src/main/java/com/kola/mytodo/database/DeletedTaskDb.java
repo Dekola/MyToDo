@@ -4,16 +4,15 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import static com.kola.mytodo.other.Constants.COMPLETED_TASK_TABLE;
 import static com.kola.mytodo.other.Constants.DATE;
+import static com.kola.mytodo.other.Constants.DELETED_TASK_TABLE;
 import static com.kola.mytodo.other.Constants.NOTE;
 import static com.kola.mytodo.other.Constants.TASK;
 import static com.kola.mytodo.other.Constants.TIME;
 import static com.kola.mytodo.other.Constants.TIMESTAMP;
 
-@Entity(tableName = COMPLETED_TASK_TABLE)
-public class CompletedDb {
-
+@Entity(tableName = DELETED_TASK_TABLE)
+public class DeletedTaskDb {
 
     @PrimaryKey(autoGenerate = true)
     int id;

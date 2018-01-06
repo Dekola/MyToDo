@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.kola.mytodo.database.AppDatabase;
 import com.kola.mytodo.R;
 import com.kola.mytodo.database.TaskDao;
-import com.kola.mytodo.database.TaskDb;
 import com.kola.mytodo.adapter.CustomClickListener;
 import com.kola.mytodo.adapter.TodoAdapter;
 import com.kola.mytodo.other.Constants;

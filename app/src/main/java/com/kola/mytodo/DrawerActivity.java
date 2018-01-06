@@ -48,7 +48,7 @@ public class DrawerActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        AppDatabase appDatabase = Room.databaseBuilder(this, AppDatabase.class, TaskDb.DATABASE).build();
+//        AppDatabase appDatabase = Room.databaseBuilder(this, AppDatabase.class, OngoingTaskDb.DATABASE).build();
 //        taskDao = appDatabase.taskDao();
 
         Bundle b = getIntent().getExtras();

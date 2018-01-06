@@ -15,7 +15,7 @@ import static com.kola.mytodo.other.Constants.TIMESTAMP;
  */
 
 @Entity (tableName = ONGOING_TASK_TABLE)
-public class TaskDb {
+public class OngoingTaskDb {
 
     @PrimaryKey (autoGenerate = true)
     int id;

@@ -24,8 +24,8 @@ import android.widget.Toast;
 
 import com.kola.mytodo.database.AppDatabase;
 import com.kola.mytodo.R;
+import com.kola.mytodo.database.OngoingTaskDb;
 import com.kola.mytodo.database.TaskDao;
-import com.kola.mytodo.database.TaskDb;
 import com.kola.mytodo.other.Constants;
 
 import java.text.SimpleDateFormat;
@@ -193,7 +193,7 @@ public class AddFragment extends Fragment {
 
                 String timeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS",  Locale.getDefault()).format(new Date());
 
-                TaskDb taskDb = new TaskDb();
+                OngoingTaskDb taskDb = new OngoingTaskDb();
                 taskDb.timeStamp = timeStamp;
                 taskDb.task = task;
                 taskDb.note = note;
