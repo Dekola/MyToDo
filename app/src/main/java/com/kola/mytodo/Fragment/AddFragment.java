@@ -26,7 +26,9 @@ import com.kola.mytodo.database.AppDatabase;
 import com.kola.mytodo.R;
 import com.kola.mytodo.database.OngoingTaskDb;
 import com.kola.mytodo.database.TaskDao;
+import com.kola.mytodo.listener.TaskListener;
 import com.kola.mytodo.other.Constants;
+import com.kola.mytodo.worker.AddToDoEventWorker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,7 +59,6 @@ public class AddFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add, container, false);
 
         AppDatabase appDatabase = Room.databaseBuilder(getActivity(), AppDatabase.class, Constants.ONGOING_TASK_TABLE).build();
-
         taskDao = appDatabase.taskDao();
 
         note = null;
@@ -86,14 +87,13 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (reminderChk.isChecked()){
+                if (reminderChk.isChecked()) {
                     dateTv.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
                     timeTv.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
                     dateTv.setClickable(true);
                     timeTv.setClickable(true);
-                }
-                else {
+                } else {
                     dateTv.setTextColor(Color.GRAY);
                     timeTv.setTextColor(Color.GRAY);
 
@@ -135,7 +135,7 @@ public class AddFragment extends Fragment {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                time = hourOfDay+":"+minute;
+                time = hourOfDay + ":" + minute;
                 timeTv.setText(time);
                 timeTv.setError(null);
                 timeTv.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -146,12 +146,12 @@ public class AddFragment extends Fragment {
 
     }
 
-    void showToast(String message){
+    void showToast(String message) {
 //        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    void startDateDialog(){
+    void startDateDialog() {
 
         final GregorianCalendar gregorianCalendar = new GregorianCalendar();
 
@@ -163,12 +163,12 @@ public class AddFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                date = day +"/"+(month+1)+"/"+year;
+                date = day + "/" + (month + 1) + "/" + year;
                 dateTv.setText(date);
                 dateTv.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
                 dateTv.setError(null);
             }
-        },year, month, day);
+        }, year, month, day);
 
         datePickerDialog.show();
     }
@@ -179,48 +179,46 @@ public class AddFragment extends Fragment {
         note = noteEt.getText().toString();
 
         if (task.equals("")) taskEt.setError("Input a task");
-        else if (reminderChk.isChecked() && dateTv.getText().equals("Date")) dateTv.setError("set the date");
-        else if (reminderChk.isChecked() && timeTv.getText().equals("Time"))timeTv.setError("set the time");
+        else if (reminderChk.isChecked() && dateTv.getText().equals("Date"))
+            dateTv.setError("set the date");
+        else if (reminderChk.isChecked() && timeTv.getText().equals("Time"))
+            timeTv.setError("set the time");
         else addToDatabase();
 
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private  void addToDatabase() {
-        new AsyncTask<Void, Void, Void>() {
+    private void addToDatabase() {
+
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(new Date());
+        TaskDb taskDb = new TaskDb();
+        taskDb.timeStamp = timeStamp;
+        taskDb.task = task;
+        taskDb.note = note;
+        taskDb.time = time;
+        taskDb.date = date;
+
+        AddToDoEventWorker worker = new AddToDoEventWorker();
+        worker.execute(taskDb);
+        worker.attachListener(new TaskListener() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void onException(Exception ex) {
+                if (ex == null) {
+                    showToast("Task successfully added");
 
-                String timeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS",  Locale.getDefault()).format(new Date());
+                    Bundle bundle = new Bundle();
+                    bundle.putString("section", TODO);
 
-                OngoingTaskDb taskDb = new OngoingTaskDb();
-                taskDb.timeStamp = timeStamp;
-                taskDb.task = task;
-                taskDb.note = note;
-                taskDb.time = time;
-                taskDb.date = date;
+                    TodoFragment todoFragment = new TodoFragment();
+                    todoFragment.setArguments(bundle);
 
-                taskDao.insertAllintoOngoingTaskTable(taskDb);
-
-                return null;
+                    FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                    fragmentManager.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    fragmentManager.replace(R.id.activity_drawer_frame, todoFragment);
+                    fragmentManager.commit();
+                }
             }
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                showToast("Task successfully added");
+        });
 
-                Bundle bundle = new Bundle();
-                bundle.putString("section", TODO);
-
-                TodoFragment todoFragment = new TodoFragment();
-                todoFragment.setArguments(bundle);
-
-                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                fragmentManager.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                fragmentManager.replace(R.id.activity_drawer_frame, todoFragment);
-                fragmentManager.commit();
-            }
-
-        }.execute();
     }
 
 //    public void backButtonWasPressed() {

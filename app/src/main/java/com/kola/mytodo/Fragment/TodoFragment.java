@@ -83,7 +83,10 @@ public class TodoFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                cursor = taskDao.getAllFromOngoingTaskTable();
+            if (section.equals(Constants.TODO)) cursor = taskDao.getAllFromOngoingTaskTable();
+            if (section.equals(Constants.COMPLETED)) cursor = taskDao.getAllFromCompletedTaskTable();
+            if (section.equals(Constants.DELETED)) cursor = taskDao.getAllFromDeletedTaskTable();
+
 
                 if (cursor.getCount()>0) {
                     cursor.moveToFirst();
@@ -121,6 +124,7 @@ public class TodoFragment extends Fragment {
 
             Bundle bundle = new Bundle();
             bundle.putString("timeStamp", timeStamp);
+            bundle.putString("section", section);
 
             TaskFragment taskFragment = new TaskFragment();
 

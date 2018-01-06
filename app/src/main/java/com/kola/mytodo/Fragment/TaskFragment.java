@@ -46,7 +46,7 @@ public class TaskFragment extends Fragment {
     TaskDao taskDao;
     TextView taskTv, noteTv, dateTv, timeTv, textview2;
     ImageView completeImg, deleteImg;
-    String task, note, date, time, timeStamp;
+    String task, note, date, time, timeStamp, section, DELETE = "delete", COMPLETE = "complete", RESTORE = "restore";
     RelativeLayout reminderRl, taskRl;
 
     @Override
@@ -56,7 +56,7 @@ public class TaskFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_task, container, false);
 
         timeStamp = getArguments().getString("timeStamp");
-
+        section = getArguments().getString("section");
         taskDao = Room.databaseBuilder(getActivity(), AppDatabase.class, Constants.ONGOING_TASK_TABLE).build().taskDao();
 
         deleteImg = view.findViewById(R.id.deleteImg);
@@ -80,7 +80,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String message = "Do u want to delete Task: "+ task;
-                showDialog(message);
+                showDialog(message, DELETE);
             }
         });
 
@@ -92,15 +92,16 @@ public class TaskFragment extends Fragment {
                 message.setSpan(b, 16, 16 + task.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
 
 //                String message = "Do u want to add Task: "+ task + " <b> to completed list";
-                showDialog(String.valueOf(message));
+                if (section.equals(Constants.TODO)) showDialog(String.valueOf(message), COMPLETE );
+                    if (section.equals(Constants.DELETED)) showDialog(String.valueOf(message), RESTORE);
+
             }
         });
 
         return view;
     }
 
-    private void showDialog(String message) {
-
+    private void showDialog(final String action, String message) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(message);
@@ -108,10 +109,11 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                addTaskToOngoingTable();
-                addTaskToCompletedTable();
-                addTaskToDeletedTable();
-                deleteTaskFromCompletedTable();
+                if (section.equals(Constants.TODO) && action.equals(DELETE)) addTaskToDeletedTable();
+                if (section.equals(Constants.TODO) && action.equals(COMPLETE)) addTaskToCompletedTable();
+                if (section.equals(Constants.COMPLETED)) deleteTaskFromCompletedTable();
+                if (section.equals(Constants.DELETED) && action.equals(RESTORE)) addTaskToOngoingTable();
+                if (section.equals(Constants.DELETED) && action.equals(DELETE)) deleteTaskFromDeletedTable();
 
             }
         });
