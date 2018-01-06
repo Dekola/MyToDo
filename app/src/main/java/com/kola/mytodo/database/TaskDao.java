@@ -29,7 +29,7 @@ public interface TaskDao  {
     Cursor getAllFromCompletedTaskTable();
 
     @Insert
-    void insertAllintoCompletedTaskTable(OngoingTaskDb task);
+    void insertAllintoCompletedTaskTable(CompletedTaskDb task);
 
     @Query("SELECT * FROM completedTaskTable WHERE timeStamp LIKE :timeStamp")
     Cursor getAtTimeStampFromCompletedTaskTable(String timeStamp);
@@ -43,7 +43,7 @@ public interface TaskDao  {
     Cursor getAllFromDeletedTaskTable();
 
     @Insert
-    void insertAllintoDeletedTaskTable(OngoingTaskDb task);
+    void insertAllintoDeletedTaskTable(DeletedTaskDb task);
 
     @Query("SELECT * FROM deletedTaskTable WHERE timeStamp LIKE :timeStamp")
     Cursor getAtTimeStampFromDeletedTaskTable(String timeStamp);

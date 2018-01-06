@@ -223,9 +223,9 @@ public class AddFragment extends Fragment {
         }.execute();
     }
 
-    public void backButtonWasPressed() {
-        Toast.makeText(getContext(), "scascas", Toast.LENGTH_SHORT).show();
-    }
+//    public void backButtonWasPressed() {
+//        Toast.makeText(getContext(), "scascas", Toast.LENGTH_SHORT).show();
+//    }
 
 //    private class addToDatabase extends AsyncTask<Void, Void, Void>{
 //        @Override

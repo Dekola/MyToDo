@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.method.ScrollingMovementMethod;
@@ -22,13 +23,19 @@ import android.widget.TextView;
 
 import com.kola.mytodo.database.AppDatabase;
 import com.kola.mytodo.R;
+import com.kola.mytodo.database.CompletedTaskDb;
+import com.kola.mytodo.database.DeletedTaskDb;
+import com.kola.mytodo.database.OngoingTaskDb;
 import com.kola.mytodo.database.TaskDao;
 import com.kola.mytodo.other.Constants;
+
+import static com.kola.mytodo.other.Constants.TODO;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
+@SuppressLint("StaticFieldLeak")
 public class TaskFragment extends Fragment {
 
 
@@ -94,11 +101,17 @@ public class TaskFragment extends Fragment {
 
     private void showDialog(String message) {
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(message);
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
+                addTaskToOngoingTable();
+                addTaskToCompletedTable();
+                addTaskToDeletedTable();
+                deleteTaskFromCompletedTable();
 
             }
         });
@@ -154,27 +167,145 @@ public class TaskFragment extends Fragment {
 
     }
 
-    public void addTaskToDeletedTable(){
+    // TODO: 1/6/2018
+    public void addTaskToOngoingTable(){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
 
+                OngoingTaskDb ongoingTaskDb = new OngoingTaskDb();
+                ongoingTaskDb.task = task;
+                ongoingTaskDb.note = note;
+                ongoingTaskDb.time = time;
+                ongoingTaskDb.date = date;
+
+                taskDao.insertAllintoOngoingTaskTable(ongoingTaskDb);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                deleteTaskFromDeletedTable();
+            }
+        }.execute();
     }
 
     public void addTaskToCompletedTable(){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
 
+                CompletedTaskDb completedTaskDb = new CompletedTaskDb();
+                completedTaskDb.task = task;
+                completedTaskDb.note = note;
+                completedTaskDb.time = time;
+                completedTaskDb.date = date;
+
+                taskDao.insertAllintoCompletedTaskTable(completedTaskDb);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                deleteTaskFromOngoingTable();
+            }
+        }.execute();
     }
 
-    public void addTaskToOngoingTable(){
+    public void addTaskToDeletedTable(){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
 
+                DeletedTaskDb deletedTaskDb = new DeletedTaskDb();
+                deletedTaskDb.task = task;
+                deletedTaskDb.note = note;
+                deletedTaskDb.time = time;
+                deletedTaskDb.date = date;
+
+                taskDao.insertAllintoDeletedTaskTable(deletedTaskDb);
+
+                return null;
+
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                deleteTaskFromOngoingTable();
+            }
+        }.execute();
     }
 
     public void deleteTaskFromOngoingTable(){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
 
+                taskDao.deleteFromdeletedTaskTable(timeStamp);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                dismissFragment();
+            }
+        }.execute();
     }
 
-    public void DeleteTaskFromCompletedTable(){
+    public void deleteTaskFromCompletedTable(){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
 
+                taskDao.deleteFromcompletedTaskTable(time);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                dismissFragment();
+            }
+        }.execute();
     }
 
-    public void DeleteTaskFromOngoingTable(){
+    public void deleteTaskFromDeletedTable(){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                taskDao.deleteFromdeletedTaskTable(timeStamp);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                dismissFragment();
+            }
+        }.execute();
+    }
+
+    void dismissFragment(){
+
+        Bundle bundle = new Bundle();
+        bundle.putString("section", TODO);
+
+        TodoFragment todoFragment = new TodoFragment();
+        todoFragment.setArguments(bundle);
+
+        FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+        fragmentManager.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        fragmentManager.replace(R.id.activity_drawer_frame, todoFragment);
+        fragmentManager.commit();
 
     }
 }
